@@ -1,0 +1,134 @@
+﻿@page "/"
+@using Nethereum.Signer
+@using System.Text
+@using Nethereum.Hex.HexConvertors.Extensions
+@using System.ComponentModel.DataAnnotations
+@using SimpleBase
+@inject NavigationManager NavigationManager
+
+<PageTitle>Login Demo</PageTitle>
+
+<MudGrid>
+    @if (VerifyAuthentication())
+    {
+        <MudItem xs="12" sm="12">
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderAvatar>
+                        <MudAvatar Color="Color.Secondary">U</MudAvatar>
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body1">@Avatar</MudText>
+                        <MudText Typo="Typo.body2"><b>Next.ID</b> Avatar</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.AccountBalanceWallet" Color="Color.Default" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo="Typo.h4">Signature verified!</MudText>
+                    <MudText Typo="Typo.body1">Login will expire at: <code>@(DateOnly.FromDateTime(DateTimeOffset.FromUnixTimeSeconds(ExpiredAt).Date).ToShortDateString())</code></MudText>
+                    <MudText Typo="Typo.body1">State generated: <code>@State</code></MudText>
+                    <MudDivider />
+                    <MudText Typo="Typo.body1"><MudTooltip Text="@Signature"><b>Signature</b></MudTooltip> is in Base58 Signed by <MudTooltip Text="@Subkey"><b>Subkey</b></MudTooltip> derived from Avatar with <MudTooltip Text="@SubkeyCertificationSignature"><b>certification signature</b></MudTooltip></MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    }
+    else
+    {
+        <MudItem xs="12" sm="7">
+            <MudPaper Class="pa-4">
+                <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                    <MudTextField T="string" Label="AuthService URL" Required="true" RequiredError="URL is required" @bind-Value="@AuthServiceUrl" />
+                    <MudSelect T="string" Label="Expire in" Variant="Variant.Text" Required="true" RequiredError="Expiration is required" @bind-Value="@ExpireIn">
+                        <MudSelectItem Value="@("1d")">1 Day</MudSelectItem>
+                        <MudSelectItem Value="@("1w")">1 Week</MudSelectItem>
+                        <MudSelectItem Value="@("1y")">1 Year</MudSelectItem>
+                    </MudSelect>
+                    <br>
+                    <div class="align-center justify-space-between">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@RedirectToAuthServer">Login with Next.ID</MudButton>
+                    </div>
+                </MudForm>
+            </MudPaper>
+        </MudItem>
+    }
+
+</MudGrid>
+
+@code{
+    bool success = true;
+    string[] errors = { };
+    MudForm? form;
+
+    public string AuthServiceUrl { get; set; } = "https://auth-service.nextnext.id/";
+    public string ExpireIn { get; set; } = "1d";
+
+    private Task RedirectToAuthServer()
+    {
+        var state = Guid.NewGuid().ToString();
+        var expiredAt = ExpireIn switch
+        {
+            "1d" => DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeSeconds(),
+            "1w" => DateTimeOffset.UtcNow.AddDays(7).ToUnixTimeSeconds(),
+            "1y" => DateTimeOffset.UtcNow.AddYears(1).ToUnixTimeSeconds(),
+            _ => DateTimeOffset.UtcNow.AddMinutes(1).ToUnixTimeSeconds(),
+        };
+
+        NavigationManager.NavigateTo($"{AuthServiceUrl}Authenticate?redirect_uri={NavigationManager.BaseUri}&expired_at={expiredAt}&state={state}");
+
+        return Task.CompletedTask;
+    }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "avatar")]
+    public string? Avatar { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "expired_at")]
+    public long ExpiredAt { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "state")]
+    public string? State { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "subkey")]
+    public string? Subkey { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "subkey_cert_sig")]
+    public string? SubkeyCertificationSignature { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "sig")]
+    public string? Signature { get; set; }
+
+    private bool VerifyAuthentication()
+    {
+        if (string.IsNullOrEmpty(Avatar) || string.IsNullOrEmpty(State) || string.IsNullOrEmpty(Subkey) || string.IsNullOrEmpty(SubkeyCertificationSignature))
+        {
+            return false;
+        }
+
+        var sigBySubkey = Base58.Bitcoin.Decode(Signature).ToArray().ToHex();
+        return VerifySignature(Avatar, $"Subkey certification signature: {Subkey}", SubkeyCertificationSignature) &&
+               VerifySignature(Subkey, BuildMessage(Avatar, ExpiredAt, State), sigBySubkey);
+    }
+
+    private string BuildMessage(string avatar, long expiredAt, string state)
+    {
+        return $"avatar={Avatar}\nredirect_uri={NavigationManager.BaseUri}\nexpired_at={expiredAt}\nstate={state}";
+    }
+
+    private static bool VerifySignature(string pubKeyHex, string messageRaw, string signatureHex)
+    {
+        var signer = new EthereumMessageSigner();
+        var pubKey = EthECKey.RecoverFromSignature(
+            MessageSigner.ExtractEcdsaSignature(signatureHex),
+            signer.HashPrefixedMessage(Encoding.UTF8.GetBytes(messageRaw))).GetPubKey(true).ToHex(true);
+
+        return pubKeyHex.IsTheSameHex(pubKey);
+    }
+}

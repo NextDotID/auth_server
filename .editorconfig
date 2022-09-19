@@ -1,0 +1,108 @@
+[*]
+insert_final_newline = true
+
+# Microsoft .NET properties
+csharp_space_after_cast = false
+csharp_style_var_elsewhere = false:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_using_directive_placement = outside_namespace:silent
+
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:warning
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_style_predefined_type_for_member_access = true:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+
+# ReSharper properties
+resharper_csharp_blank_lines_around_single_line_invocable = 1
+resharper_csharp_wrap_after_declaration_lpar = true
+resharper_csharp_wrap_after_invocation_lpar = true
+resharper_csharp_wrap_arguments_style = chop_if_long
+resharper_csharp_wrap_before_first_type_parameter_constraint = true
+resharper_csharp_wrap_extends_list_style = chop_if_long
+resharper_csharp_wrap_parameters_style = chop_if_long
+resharper_keep_existing_embedded_arrangement = false
+resharper_keep_existing_expr_member_arrangement = false
+resharper_keep_existing_initializer_arrangement = false
+resharper_keep_existing_invocation_parens_arrangement = false
+resharper_keep_existing_property_patterns_arrangement = false
+resharper_keep_existing_switch_expression_arrangement = false
+resharper_max_enum_members_on_line = 1
+resharper_max_initializer_elements_on_line = 1
+resharper_nested_ternary_style = expanded
+resharper_new_line_before_while = true
+resharper_place_accessor_attribute_on_same_line = false
+resharper_place_field_attribute_on_same_line = false
+resharper_place_linq_into_on_new_line = false
+resharper_place_simple_accessor_on_single_line = false
+resharper_place_simple_embedded_statement_on_same_line = false
+resharper_place_simple_property_pattern_on_single_line = true
+resharper_show_autodetect_configure_formatting_tip = false
+resharper_space_within_single_line_array_initializer_braces = true
+resharper_use_indent_from_vs = false
+resharper_wrap_array_initializer_style = chop_if_long
+resharper_wrap_chained_binary_expressions = chop_if_long
+resharper_wrap_chained_binary_patterns = chop_if_long
+resharper_wrap_chained_method_calls = chop_if_long
+resharper_wrap_enum_declaration = chop_if_long
+resharper_wrap_property_pattern = chop_if_long
+resharper_braces_for_for = required
+resharper_braces_for_foreach = required
+resharper_braces_for_ifelse = required
+resharper_braces_for_while = required
+resharper_braces_redundant = false
+resharper_trailing_comma_in_multiline_lists = true
+resharper_csharp_wrap_array_initializer_style = chop_if_long
+resharper_csharp_max_array_initializer_elements_on_line = 3
+resharper_csharp_wrap_object_and_collection_initializer_style = chop_if_long
+resharper_csharp_max_initializer_elements_on_line = 3
+
+# StyleCop
+
+# Using directive should appear within a namespace declaration
+dotnet_diagnostic.sa1200.severity = None
+
+# XML comment analysis is disabled due to project configuration
+dotnet_diagnostic.sa0001.severity = None
+
+# The file header is missing or not located at the top of the file
+dotnet_diagnostic.sa1633.severity = None
+
+# Elements should be documented
+dotnet_diagnostic.sa1600.severity = None
+
+# Prefix local calls with this
+dotnet_diagnostic.sa1101.severity = None
+
+# Elements should be separated by blank line
+dotnet_diagnostic.sa1516.severity = None
+
+# Put constructor initializers on their own line
+dotnet_diagnostic.sa1128.severity = None
+
+# File name should match first type name
+dotnet_diagnostic.sa1649.severity = Suggestion
+
+# File may only contain a single type
+dotnet_diagnostic.sa1402.severity = Suggestion
+
+# Enumeration items should be documented
+dotnet_diagnostic.sa1602.severity = None
+
+# SonarLint
+
+# S2190: Recursion should not be infinite
+dotnet_diagnostic.s2190.severity = Suggestion
+
+[*.cs]
+# File properties
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+trim_trailing_whitespace = true
