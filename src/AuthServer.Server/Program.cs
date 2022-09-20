@@ -29,6 +29,11 @@ builder.Services
     {
         options.ClientId = builder.Configuration.GetSection("Twitter").GetValue<string>("ClientId");
         options.ClientSecret = builder.Configuration.GetSection("Twitter").GetValue<string>("ClientSecret");
+    })
+    .AddGitHub(options =>
+    {
+        options.ClientId = builder.Configuration.GetSection("GitHub").GetValue<string>("ClientId");
+        options.ClientSecret = builder.Configuration.GetSection("GitHub").GetValue<string>("ClientSecret");
     });
 
 builder.Services.AddHttpClient();
