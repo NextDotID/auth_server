@@ -112,9 +112,8 @@
             return false;
         }
 
-        var sigBySubkey = Base58.Bitcoin.Decode(Signature).ToArray().ToHex();
         return VerifySignature(Avatar, $"Subkey certification signature: {Subkey}", SubkeyCertificationSignature) &&
-               VerifySignature(Subkey, BuildMessage(Avatar, ExpiredAt, State), sigBySubkey);
+               VerifySignature(Subkey, BuildMessage(Avatar, ExpiredAt, State), Signature!);
     }
 
     private string BuildMessage(string avatar, long expiredAt, string state)
@@ -122,9 +121,10 @@
         return $"avatar={Avatar}\nredirect_uri={NavigationManager.BaseUri}\nexpired_at={expiredAt}\nstate={state}";
     }
 
-    private static bool VerifySignature(string pubKeyHex, string messageRaw, string signatureHex)
+    private static bool VerifySignature(string pubKeyHex, string messageRaw, string signatureBase58)
     {
         var signer = new EthereumMessageSigner();
+        var signatureHex = Base58.Bitcoin.Decode(signatureBase58).ToArray().ToHex();
         var pubKey = EthECKey.RecoverFromSignature(
             MessageSigner.ExtractEcdsaSignature(signatureHex),
             signer.HashPrefixedMessage(Encoding.UTF8.GetBytes(messageRaw))).GetPubKey(true).ToHex(true);

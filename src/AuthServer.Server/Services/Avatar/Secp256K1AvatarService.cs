@@ -19,9 +19,9 @@ public class Secp256K1AvatarService : IAvatarService
 
         foreach (AvatarStore avatarStore in configuration.GetSection("Avatars").GetChildren().Select(a => a.Get<AvatarStore>()))
         {
-            EthECKey subkey = new EthECKey(avatarStore.Subkey.PrivateKey);
+            var subkey = new EthECKey(avatarStore.Subkey.PrivateKey);
             var recoveredAvatar = EthECKey.RecoverFromSignature(
-                MessageSigner.ExtractEcdsaSignature(avatarStore.Subkey.CertificationSignature),
+                MessageSigner.ExtractEcdsaSignature(Base58.Bitcoin.Decode(avatarStore.Subkey.CertificationSignature).ToArray().ToHex()),
                 signer.HashPrefixedMessage(Encoding.UTF8.GetBytes($"Subkey certification signature: {subkey.GetPubKey(true).ToHex(true)}"))).GetPubKey(true).ToHex(true);
             if (avatarStore.Avatar.IsTheSameHex(recoveredAvatar))
             {
