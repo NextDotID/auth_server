@@ -1,5 +1,6 @@
 using AuthServer.Server.Services.Avatar;
 using AuthServer.Server.Services.Proof;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOptions();
 builder.Services.AddControllersWithViews();
 
-builder.Services
+AuthenticationBuilder auth = builder.Services
     .AddAuthentication(options =>
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -19,22 +20,34 @@ builder.Services
         options.Cookie.MaxAge = null;
         options.LoginPath = "/Authenticate";
         options.LogoutPath = "/SignOut";
-    })
-    .AddDiscord(options =>
+    });
+
+if (builder.Configuration.GetSection("Discord").Exists())
+{
+    auth.AddDiscord(options =>
     {
         options.ClientId = builder.Configuration.GetSection("Discord").GetValue<string>("ClientId");
         options.ClientSecret = builder.Configuration.GetSection("Discord").GetValue<string>("ClientSecret");
-    })
-    .AddTwitter(options =>
+    });
+}
+
+if (builder.Configuration.GetSection("Twitter").Exists())
+{
+    auth.AddTwitter(options =>
     {
         options.ClientId = builder.Configuration.GetSection("Twitter").GetValue<string>("ClientId");
         options.ClientSecret = builder.Configuration.GetSection("Twitter").GetValue<string>("ClientSecret");
-    })
-    .AddGitHub(options =>
+    });
+}
+
+if (builder.Configuration.GetSection("GitHub").Exists())
+{
+    auth.AddGitHub(options =>
     {
         options.ClientId = builder.Configuration.GetSection("GitHub").GetValue<string>("ClientId");
         options.ClientSecret = builder.Configuration.GetSection("GitHub").GetValue<string>("ClientSecret");
     });
+}
 
 builder.Services.AddHttpClient();
 
