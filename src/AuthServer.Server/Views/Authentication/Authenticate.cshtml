@@ -2,14 +2,16 @@
 @model AuthenticationScheme[]
 
 <div class="authWrapper">
-    <h1>Authentication</h1>
-    <p class="lead text-left">Sign in using one of these external providers:</p>
+    <div class="authTitle">Authentication</div>
+    <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
 
     @foreach (AuthenticationScheme scheme in Model!.OrderBy(p => p.DisplayName))
     {
-        <form action="/Authenticate" method="post">
-            <input type="hidden" name="Provider" value="@scheme.Name" />
-            <button class="btn btn-lg btn-success m-1" type="submit">Connect using @scheme.DisplayName</button>
+        <form class="metaContainer" action="/Authenticate" method="post">
+            <div class="metaItem">
+                <input type="hidden" name="Provider" value="@scheme.Name" />
+                <button class="btn btn-lg btn-success m-1" type="submit">Connect using @scheme.DisplayName</button>
+            </div>
         </form>
     }
 </div>

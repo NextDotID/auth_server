@@ -12,3 +12,42 @@ body {
   margin: 0;
   height: 100vh;
 }
+
+.authWrapper {
+  width: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 600px;
+  background: #f6f6f6;
+  box-shadow: 0px 4px 24px rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #121212;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+.authTitle {
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 24px;
+  color: #121212;
+}
+
+.metaContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 40px 0;
+}
+.metaItem{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}
