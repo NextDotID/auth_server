@@ -39,15 +39,27 @@ body {
   color: #121212;
 }
 
-.metaContainer{
+.metaContainer {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin: 40px 0;
 }
-.metaItem{
+.metaItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+  background: #fafafa;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  width: 320px;
+  padding: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 24px;
+  color: #121212;
+}
+.metaIcon {
+  width: 24px;
+  height: 24px;
 }

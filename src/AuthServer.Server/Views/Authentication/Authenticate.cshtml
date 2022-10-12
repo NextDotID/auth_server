@@ -4,14 +4,18 @@
 <div class="authWrapper">
     <div class="authTitle">Authentication</div>
     <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
-
-    @foreach (AuthenticationScheme scheme in Model!.OrderBy(p => p.DisplayName))
-    {
-        <form class="metaContainer" action="/Authenticate" method="post">
-            <div class="metaItem">
+    <div class="metaContainer">
+        @foreach (AuthenticationScheme scheme in Model!.OrderBy(p => p.DisplayName))
+        {
+            <form action="/Authenticate" method="post">
                 <input type="hidden" name="Provider" value="@scheme.Name" />
-                <button class="btn btn-lg btn-success m-1" type="submit">Connect using @scheme.DisplayName</button>
-            </div>
-        </form>
-    }
+                <button class="metaItem" type="submit">
+                    <img class="metaIcon" src="~/assets/twitter.svg" alt="">
+                    <div>@scheme.DisplayName</div>
+                    <div></div>
+                </button>
+            </form>
+        }
+    </div>
+
 </div>
