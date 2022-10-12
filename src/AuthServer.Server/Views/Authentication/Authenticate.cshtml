@@ -5,12 +5,15 @@
     <div class="authTitle">Authentication</div>
     <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
     <div class="metaContainer">
+
         @foreach (AuthenticationScheme scheme in Model!.OrderBy(p => p.DisplayName))
         {
             <form action="/Authenticate" method="post">
                 <input type="hidden" name="Provider" value="@scheme.Name" />
                 <button class="metaItem" type="submit">
-                    <img class="metaIcon" src="~/assets/twitter.svg" alt="">
+                    @* if(scheme.DisplayName == 'Twitter'){ *@
+                    <img class="metaIcon" src="~/assets/twitter.svg">
+                    @* } *@
                     <div>@scheme.DisplayName</div>
                     <div></div>
                 </button>

@@ -54,7 +54,7 @@ button.accept-policy {
   height: 100%;
 }
 
-.header{
+.header {
   padding: 2rem;
 }
 .flex {
@@ -63,6 +63,16 @@ button.accept-policy {
   justify-content: space-around;
 }
 
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+@media (max-width: 520px) {
+  .menu {
+    opacity: 0;
+  }
+}
 .menuItem {
   color: rgba(255, 255, 255, 0.75);
   font-family: "Inter";
@@ -77,6 +87,6 @@ button.accept-policy {
   padding: 4px 6px;
   margin-left: 10px;
   margin-right: 40px;
-  color: #1C68F3;
+  color: #1c68f3;
   font-weight: 700;
 }
