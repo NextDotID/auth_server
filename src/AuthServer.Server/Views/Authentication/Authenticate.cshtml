@@ -32,13 +32,21 @@
             </form>
         }
         @if (Model.Any(s => s.DisplayName == "Metamask"))
-        {
-            <button class="metaItem">
-                <img class="metaIcon" src="~/assets/metamask.svg" alt="">
-                <div>MetaMask</div>
-                <div> </div>
-            </button>
+            {
+        <div class="web3Divider">
+            <span>
+                Web3
+            </span>
+        </div>
+        <button class="metaItem">
+            <img class="metaIcon" src="~/assets/metamask.svg" alt="">
+            <div>MetaMask</div>
+            <div> </div>
+        </button>
         }
+    </div>
+    <div class="guide">
+        New to Next.ID? <a href="">Learn more</a>
     </div>
 
 </div>

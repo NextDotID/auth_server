@@ -71,3 +71,30 @@ body {
   width: 24px;
   height: 24px;
 }
+
+.guide {
+  text-align: center;
+}
+.guide a {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  color: #1c68f3;
+  text-decoration: none;
+}
+
+.web3Divider {
+  width: 100%;
+  height: 11px;
+  color: #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: center;
+  margin: 16px 0;
+}
+.web3Divider span {
+  color: #CCCCCC;
+  background-color: #f6f6f6;
+  padding: 0 10px;
+  font-size: 12px;
+  line-height: 22px;
+}
