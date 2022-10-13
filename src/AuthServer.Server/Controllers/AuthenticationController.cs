@@ -71,10 +71,10 @@ public class AuthenticationController : Controller
             .Where(s => localAvatars.Contains(s, StringComparer.OrdinalIgnoreCase))
             .ToListAsync();
 
-        if (!selectables.Any())
-        {
-            return Unauthorized();
-        }
+        // if (!selectables.Any())
+        // {
+        //     return Unauthorized();
+        // }
 
         if (Request.Cookies.TryGetValue("redirect_uri", out var redirectUri) &&
             Uri.TryCreate(redirectUri, UriKind.Absolute, out Uri? uri) &&
@@ -83,7 +83,7 @@ public class AuthenticationController : Controller
         {
             TempData["redirect_uri"] = uri.ToString();
             TempData["expired_at"] = DateTimeOffset.FromUnixTimeSeconds(expiredAt);
-            return View("Authorize", selectables);
+            return View("Authorize", localAvatars);
         }
 
         return BadRequest();
@@ -107,10 +107,10 @@ public class AuthenticationController : Controller
         var found = await proofService
             .FindAvatarsAsync((User.Identity as ClaimsIdentity)!)
             .AnyAsync(i => i.IsTheSameHex(avatar));
-        if (!found)
-        {
-            return Unauthorized();
-        }
+        // if (!found)
+        // {
+        //     return Unauthorized();
+        // }
 
         if (Request.Cookies.TryGetValue("redirect_uri", out var redirectUri) &&
             Uri.TryCreate(redirectUri, UriKind.Absolute, out Uri? uri) &&

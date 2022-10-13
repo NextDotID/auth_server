@@ -2,21 +2,25 @@
 
 <div class="authWrapper">
     <div class="authTitle">Authorization</div>
-    <p class="lead text-left">Authorize app: <span class="text-danger">@TempData["redirect_uri"]</span></p>
-    <p class="lead text-left">Expired at: <span class="text-sm">@TempData["expired_at"]</span></p>
+    <p class="authSubTitle"> <strong>Next.ID Demo</strong> would like to access the following info</p>
+    <div class="infoWrapper">
+        <div>
+            <div class="itemTitle">Authorize app:</div>
+            <div class="itemMain"> @TempData["redirect_uri"]</span></p>
+            </div>
+        </div>
+        <div>
+            <div class="itemTitle">Expired at:</div>
+            <div class="itemMain">@TempData["expired_at"]</div>
+        </div>
+    </div>
+
 
     @foreach (var avatar in Model!.OrderBy(a => a))
     {
-        <form action="/Authorize" method="post">
-            <div class="form-row">
-                <div class="col">
-                    <label class="col">@avatar</label>
-                </div>
-                <input type="hidden" name="Avatar" value="@avatar"/>
-                <div class="col">
-                    <button class="btn btn-primary m-1" type="submit">Authorize with this</button>
-                </div>
-            </div>
+        <form class="btnWrapper" action="/Authorize" method="post">
+            <button class="confirmBtn" type="submit">Authorize with this</button>
+            <div class="cancelBtn">Cancel</div>
         </form>
     }
 </div>

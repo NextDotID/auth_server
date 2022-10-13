@@ -44,6 +44,10 @@ body {
   font-size: 24px;
   line-height: 24px;
   color: #121212;
+  font-family: system-ui;
+}
+.authSubTitle{
+  margin: 20px 0;
 }
 
 .metaContainer {
@@ -73,6 +77,9 @@ body {
 }
 
 .guide {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
   text-align: center;
 }
 .guide a {
@@ -92,9 +99,64 @@ body {
   margin: 16px 0;
 }
 .web3Divider span {
-  color: #CCCCCC;
+  color: #cccccc;
   background-color: #f6f6f6;
   padding: 0 10px;
   font-size: 12px;
   line-height: 22px;
+}
+
+.infoWrapper {
+  box-shadow: 0px 2px 8px 0px #00000005;
+  background: #fafafa;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.infoWrapper .itemTitle {
+  font-family: "system-ui";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 22px;
+  display: block;
+  color: #121212;
+}
+.infoWrapper .itemMain{
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.confirmBtn {
+  width: 100%;
+  max-width: 320px;
+  background: #1c68f3;
+  border: 1.5px solid rgba(18, 18, 18, 0.1);
+  border-radius: 8px;
+  padding: 8px 0;
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+.btnWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.cancelBtn {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  color: #1c68f3;
+  cursor: pointer;
 }
