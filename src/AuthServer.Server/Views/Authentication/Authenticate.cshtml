@@ -6,18 +6,38 @@
     <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
     <div class="metaContainer">
 
-        @foreach (AuthenticationScheme scheme in Model!.OrderBy(p => p.DisplayName))
+        @foreach (AuthenticationScheme scheme in Model!.Where(s => s.DisplayName != "Metamask").OrderBy(p =>
+        p.DisplayName))
         {
             <form action="/Authenticate" method="post">
                 <input type="hidden" name="Provider" value="@scheme.Name" />
                 <button class="metaItem" type="submit">
-                    @* if(scheme.DisplayName == 'Twitter'){ *@
-                    <img class="metaIcon" src="~/assets/twitter.svg">
-                    @* } *@
+                    @switch (scheme.DisplayName)
+                    {
+                        case "Twitter":
+                            <img class="metaIcon" src="~/assets/twitter.svg">
+                            break;
+                        case "GitHub":
+                            <img class="metaIcon" src="~/assets/github.svg">
+                            break;
+                        case "Discord":
+                            <img class="metaIcon" src="~/assets/discord.svg">
+                            break;
+                        default:
+                            break;
+                    }
                     <div>@scheme.DisplayName</div>
-                    <div></div>
+                    <div> </div>
                 </button>
             </form>
+        }
+        @if (Model.Any(s => s.DisplayName == "Metamask"))
+        {
+            <button class="metaItem">
+                <img class="metaIcon" src="~/assets/metamask.svg" alt="">
+                <div>MetaMask</div>
+                <div> </div>
+            </button>
         }
     </div>
 

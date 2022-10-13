@@ -65,6 +65,7 @@ body {
   font-size: 13px;
   line-height: 24px;
   color: #121212;
+  cursor: pointer;
 }
 .metaIcon {
   width: 24px;
