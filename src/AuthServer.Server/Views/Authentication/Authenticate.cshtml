@@ -1,15 +1,52 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @model AuthenticationScheme[]
 
-<div class="jumbotron">
-    <h1>Authentication</h1>
-    <p class="lead text-left">Sign in using one of these external providers:</p>
+<div class="authWrapper">
+    <div class="authTitle">Authentication</div>
+    <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
+    <div class="metaContainer">
 
-    @foreach (AuthenticationScheme scheme in Model!.OrderBy(p => p.DisplayName))
-    {
-        <form action="/Authenticate" method="post">
-            <input type="hidden" name="Provider" value="@scheme.Name" />
-            <button class="btn btn-lg btn-success m-1" type="submit">Connect using @scheme.DisplayName</button>
-        </form>
-    }
+        @foreach (AuthenticationScheme scheme in Model!.Where(s => s.DisplayName != "Metamask").OrderBy(p =>
+        p.DisplayName))
+        {
+            <form action="/Authenticate" method="post">
+                <input type="hidden" name="Provider" value="@scheme.Name" />
+                <button class="metaItem" type="submit">
+                    @switch (scheme.DisplayName)
+                    {
+                        case "Twitter":
+                            <img class="metaIcon" src="~/assets/twitter.svg">
+                            break;
+                        case "GitHub":
+                            <img class="metaIcon" src="~/assets/github.svg">
+                            break;
+                        case "Discord":
+                            <img class="metaIcon" src="~/assets/discord.svg">
+                            break;
+                        default:
+                            break;
+                    }
+                    <div>@scheme.DisplayName</div>
+                    <div> </div>
+                </button>
+            </form>
+        }
+        @if (Model.Any(s => s.DisplayName == "Metamask"))
+            {
+        <div class="web3Divider">
+            <span>
+                Web3
+            </span>
+        </div>
+        <button class="metaItem">
+            <img class="metaIcon" src="~/assets/metamask.svg" alt="">
+            <div>MetaMask</div>
+            <div> </div>
+        </button>
+        }
+    </div>
+    <div class="guide">
+        New to Next.ID? <a href="">Learn more</a>
+    </div>
+
 </div>

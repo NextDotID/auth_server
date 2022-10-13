@@ -1,18 +1,166 @@
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+body {
+  margin: 0;
+  height: 100vh;
 }
 
-body {
-  margin-bottom: 60px;
+.authWrapper {
+  width: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 600px;
+  background: #f6f6f6;
+  box-shadow: 0px 4px 24px rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #121212;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+@media (max-width: 520px) {
+  .authWrapper {
+    min-width: unset;
+    width: 90%;
+  }
+}
+.authTitle {
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 24px;
+  color: #121212;
+  font-family: system-ui;
+}
+.authSubTitle {
+  margin: 20px 0;
+}
+
+.metaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 40px 0;
+}
+.metaItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fafafa;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  width: 320px;
+  padding: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 24px;
+  color: #121212;
+  cursor: pointer;
+}
+.metaIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.guide {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+  text-align: center;
+}
+.guide a {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  color: #1c68f3;
+  text-decoration: none;
+}
+
+.web3Divider {
+  width: 100%;
+  height: 11px;
+  color: #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: center;
+  margin: 16px 0;
+}
+.web3Divider span {
+  color: #cccccc;
+  background-color: #f6f6f6;
+  padding: 0 10px;
+  font-size: 12px;
+  line-height: 22px;
+}
+
+.infoWrapper {
+  box-shadow: 0px 2px 8px 0px #00000005;
+  background: #fafafa;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.infoWrapper .itemTitle {
+  font-family: "system-ui";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 22px;
+  display: block;
+  color: #121212;
+}
+.infoWrapper .itemMain {
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.confirmBtn {
+  width: 100%;
+  max-width: 320px;
+  background: #1c68f3;
+  border: 1.5px solid rgba(18, 18, 18, 0.1);
+  border-radius: 8px;
+  padding: 8px 0;
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+.btnWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.cancelBtn {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  color: #1c68f3;
+  cursor: pointer;
+}
+.errorIcon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 40px;
 }
