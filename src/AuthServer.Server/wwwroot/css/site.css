@@ -46,7 +46,7 @@ body {
   color: #121212;
   font-family: system-ui;
 }
-.authSubTitle{
+.authSubTitle {
   margin: 20px 0;
 }
 
@@ -127,7 +127,7 @@ body {
   display: block;
   color: #121212;
 }
-.infoWrapper .itemMain{
+.infoWrapper .itemMain {
   font-size: 12px;
   line-height: 20px;
 }
@@ -159,4 +159,9 @@ body {
   line-height: 24px;
   color: #1c68f3;
   cursor: pointer;
+}
+.errorIcon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 40px;
 }
