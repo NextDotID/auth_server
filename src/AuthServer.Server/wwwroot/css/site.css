@@ -8,13 +8,6 @@ html {
   }
 }
 
-@media (max-width: 520px) {
-  .authWrapper {
-    min-width: unset;
-    width: 90%;
-  }
-}
-
 body {
   margin: 0;
   height: 100vh;
@@ -38,6 +31,12 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 40px 0;
+}
+@media (max-width: 520px) {
+  .authWrapper {
+    min-width: unset;
+    width: 90%;
+  }
 }
 .authTitle {
   font-weight: 900;
