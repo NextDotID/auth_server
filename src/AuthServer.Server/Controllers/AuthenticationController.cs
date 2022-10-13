@@ -30,7 +30,7 @@ public class AuthenticationController : Controller
             !uri.IsAbsoluteUri ||
             !string.IsNullOrEmpty(uri.Query))
         {
-            return View("ViewError", "BadRequest");
+            return View("Error", "BadRequest");
         }
 
         Response.Cookies.Delete("redirect_uri");
@@ -49,7 +49,7 @@ public class AuthenticationController : Controller
     {
         if (string.IsNullOrWhiteSpace(provider) || !await HttpContext.IsProviderSupportedAsync(provider))
         {
-            return View("ViewError", "BadRequest");
+            return View("Error", "BadRequest");
         }
 
         return Challenge(new AuthenticationProperties { RedirectUri = "/Authorize" }, provider);
@@ -62,7 +62,6 @@ public class AuthenticationController : Controller
         if (string.IsNullOrEmpty(User.Identity?.AuthenticationType) || string.IsNullOrEmpty(User.Identity.Name))
         {
             return View("Unauthorized", "sdf");
-            // return Forbid();
         }
 
         var localAvatars = avatarService.GetAvailableAvatars().ToList();
@@ -73,7 +72,7 @@ public class AuthenticationController : Controller
 
         if (!selectables.Any())
         {
-            return View("ViewError", "Unauthorized");
+            return View("Error", "Unauthorized");
         }
 
         if (Request.Cookies.TryGetValue("redirect_uri", out var redirectUri) &&
@@ -86,7 +85,7 @@ public class AuthenticationController : Controller
             return View("Authorize", selectables);
         }
 
-        return View("ViewError", "BadRequest");
+        return View("Error", "BadRequest");
     }
 
     [Authorize]
@@ -95,13 +94,13 @@ public class AuthenticationController : Controller
     {
         if (string.IsNullOrEmpty(User.Identity?.AuthenticationType) || string.IsNullOrEmpty(User.Identity.Name))
         {
-            return View("ViewError", "Forbidden");
+            return View("Error", "Forbidden");
         }
 
         IEnumerable<string> avatars = avatarService.GetAvailableAvatars();
         if (!avatars.Contains(avatar, StringComparer.OrdinalIgnoreCase))
         {
-            return View("ViewError", "BadRequest");
+            return View("Error", "BadRequest");
         }
 
         var found = await proofService
@@ -109,7 +108,7 @@ public class AuthenticationController : Controller
             .AnyAsync(i => i.IsTheSameHex(avatar));
         if (!found)
         {
-            return View("ViewError", "Unauthorized");
+            return View("Error", "Unauthorized");
         }
 
         if (Request.Cookies.TryGetValue("redirect_uri", out var redirectUri) &&
@@ -126,7 +125,7 @@ public class AuthenticationController : Controller
             return Redirect($"{uri}?avatar={avatar}&expired_at={expiredAt}&state={state}&subkey={subkey}&subkey_cert_sig={subCertSig}&sig={sig}");
         }
 
-        return View("ViewError", "BadRequest");
+        return View("Error", "BadRequest");
     }
 
     [HttpGet("~/SignOut")]
