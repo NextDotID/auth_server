@@ -19,6 +19,8 @@
     @foreach (var avatar in Model!.OrderBy(a => a))
     {
         <form class="btnWrapper" action="/Authorize" method="post">
+            <!-- TODO: should be a select here.  -->
+            <input type="hidden" name="Avatar" value="@avatar" />
             <button class="confirmBtn" type="submit">Authorize with this</button>
             <div class="cancelBtn">Cancel</div>
         </form>
