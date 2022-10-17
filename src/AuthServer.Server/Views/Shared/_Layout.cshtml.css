@@ -29,24 +29,24 @@ for details on configuring this project to bundle and minify static web assets. 
   justify-content: space-around;
 }
 
-.menu {
+.next_menu {
   display: flex;
   align-items: center;
   justify-content: space-around;
 }
 @media (max-width: 520px) {
-  .menu {
+  .next_menu {
     opacity: 0;
   }
 }
-.menuItem {
+.next_menuItem {
   color: rgba(255, 255, 255, 0.75);
   font-family: "Inter";
   font-weight: 500;
   cursor: pointer;
 }
 
-.badge {
+.next_badge {
   background: rgba(28, 104, 243, 0.25);
   border-radius: 2px;
   font-size: 10px;
