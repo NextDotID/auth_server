@@ -14,7 +14,6 @@ body {
 }
 
 .authWrapper {
-  width: auto;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -34,7 +33,7 @@ body {
 }
 @media (max-width: 520px) {
   .authWrapper {
-    min-width: unset;
+    min-width: 400px;
     width: 90%;
   }
 }
@@ -46,6 +45,8 @@ body {
   font-family: system-ui;
 }
 .authSubTitle {
+  width: 100%;
+  max-width: 320px;
   margin: 20px 0;
 }
 
@@ -110,12 +111,14 @@ body {
   background: #fafafa;
   border: 1px solid #eeeeee;
   border-radius: 8px;
-  min-width: 320px;
+  width: 100%;
+  max-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 20px;
   margin-bottom: 24px;
+  box-sizing: border-box;
 }
 .infoWrapper .itemTitle {
   font-family: "system-ui";
@@ -164,3 +167,13 @@ body {
   height: 64px;
   margin-bottom: 40px;
 }
+
+.selectCom{
+  border: none;
+  font-size: 12px;
+  line-height: 20px;
+  margin: 6px 0;
+  max-width: 250px;
+  background: transparent;
+}
+
