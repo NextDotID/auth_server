@@ -18,8 +18,8 @@ AuthenticationBuilder auth = builder.Services
     {
         options.ExpireTimeSpan = TimeSpan.FromMinutes(3);
         options.Cookie.MaxAge = null;
-        options.LoginPath = "/Authenticate";
-        options.LogoutPath = "/SignOut";
+        options.LoginPath = "/authenticate";
+        options.LogoutPath = "/signout";
     });
 
 if (builder.Configuration.GetSection("Discord").Exists())
