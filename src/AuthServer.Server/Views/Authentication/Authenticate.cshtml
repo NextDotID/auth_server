@@ -6,10 +6,11 @@
     <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
     <div class="metaContainer">
 
-        @foreach (AuthenticationScheme scheme in Model!.Where(s => s.DisplayName != "Metamask").OrderBy(p =>
-        p.DisplayName))
+        @foreach (AuthenticationScheme scheme in Model!
+            .Where(s => s.DisplayName != "Metamask")
+            .OrderBy(p =>p.DisplayName))
         {
-            <form action="/Authenticate" method="post">
+            <form action="/authenticate" method="post">
                 <input type="hidden" name="Provider" value="@scheme.Name" />
                 <button class="metaItem" type="submit">
                     @switch (scheme.DisplayName)

@@ -1,23 +1,22 @@
 ﻿@model List<string>
 
 <div class="authWrapper">
-    <form class="btnWrapper" action="/Authorize" method="post" id="avatarForm">
+    <form class="btnWrapper" action="/authorize" method="post" id="avatarForm">
         <div class="authTitle">Authorization</div>
         <p class="authSubTitle"> <strong>Next.ID Demo</strong> would like to access the following info</p>
         <div class="infoWrapper">
             <div>
                 <div class="itemTitle">Authorize app:</div>
-                <div class="itemMain"> @TempData["redirect_uri"]</span></p>
-                </div>
+                <div class="itemMain"> @TempData["redirect_uri"]</div>
             </div>
             <div>
                 <div class="itemTitle">Expired at:</div>
-                <div class="itemMain">@TempData["expired_at"]</div>
+                <div class="itemMain"> @TempData["expired_at"]</div>
             </div>
             <div>
                 <div class="itemTitle">Identity:</div>
                 <div class="itemMain">
-                    <select class="selectCom" form="avatarForm">
+                    <select name="avatar" id="avatar" class="selectCom" form="avatarForm">
                         @foreach (var avatar in Model!.OrderBy(a => a))
                         {
                             <option value="@avatar">@avatar</option>

@@ -20,7 +20,7 @@ public class AuthenticationController : Controller
         this.avatarService = avatarService;
     }
 
-    [HttpGet("~/Authenticate")]
+    [HttpGet("~/authenticate")]
     public async Task<IActionResult> SignIn(
         [FromQuery(Name = "redirect_uri")] string redirectUri,
         [FromQuery(Name = "expired_at")] long expiredAt,
@@ -44,7 +44,7 @@ public class AuthenticationController : Controller
         return View("Authenticate", await HttpContext.GetExternalProvidersAsync());
     }
 
-    [HttpPost("~/Authenticate")]
+    [HttpPost("~/authenticate")]
     public async Task<IActionResult> SignIn([FromForm] string provider)
     {
         if (string.IsNullOrWhiteSpace(provider) || !await HttpContext.IsProviderSupportedAsync(provider))
@@ -52,11 +52,11 @@ public class AuthenticationController : Controller
             return View("Error", "BadRequest");
         }
 
-        return Challenge(new AuthenticationProperties { RedirectUri = "/Authorize" }, provider);
+        return Challenge(new AuthenticationProperties { RedirectUri = "/authorize" }, provider);
     }
 
     [Authorize]
-    [HttpGet("~/Authorize")]
+    [HttpGet("~/authorize")]
     public async Task<IActionResult> Authorize()
     {
         if (string.IsNullOrEmpty(User.Identity?.AuthenticationType) || string.IsNullOrEmpty(User.Identity.Name))
@@ -89,7 +89,7 @@ public class AuthenticationController : Controller
     }
 
     [Authorize]
-    [HttpPost("~/Authorize")]
+    [HttpPost("~/authorize")]
     public async Task<IActionResult> Authorize([FromForm] string avatar)
     {
         if (string.IsNullOrEmpty(User.Identity?.AuthenticationType) || string.IsNullOrEmpty(User.Identity.Name))
@@ -128,8 +128,8 @@ public class AuthenticationController : Controller
         return View("Error", "BadRequest");
     }
 
-    [HttpGet("~/SignOut")]
-    [HttpPost("~/SignOut")]
+    [HttpGet("~/signout")]
+    [HttpPost("~/signout")]
     public IActionResult SignOutCurrentUser()
     {
         // Instruct the cookies middleware to delete the local cookie created
