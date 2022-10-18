@@ -61,7 +61,7 @@ public class AuthenticationController : Controller
     {
         if (string.IsNullOrEmpty(User.Identity?.AuthenticationType) || string.IsNullOrEmpty(User.Identity.Name))
         {
-            return View("Unauthorized", "sdf");
+            return View("Unauthorized", "Unauthorized");
         }
 
         var localAvatars = avatarService.GetAvailableAvatars().ToList();
