@@ -28,37 +28,11 @@
         </main>
 
     </div>
+    <div id="snackbar"></div>
 
 
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
-
-<script>
-    const snackbar = document.querySelector('#snackbar') || document.createElement('div')
-    snackbar.id = 'snackbar'
-    snackbar.className = 'snackbar'
-    if (!document.querySelector('#snackbar')) {
-        document.querySelector('#container').appendChild(snackbar)
-
-        const toastEvent = new CustomEvent('toast_error')
-
-        const showSnackBar = (text) => {
-            snackbar.innerText = 'ggg'
-            snackbar.className = "snackbar show"
-            setTimeout(() => {
-                snackbar.className = "snackbar"
-            }, 3000)
-        }
-
-        window.addEventListener('toast_error', (e) => {
-            showSnackBar(e)
-        })
-        window.dispatchEvent(toastEvent)
-    }
-
-
-
-</script>
 
 </html>

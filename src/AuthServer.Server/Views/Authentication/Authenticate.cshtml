@@ -65,7 +65,7 @@
     const loginWithEthereum = async () => {
         try {
             account = (await ethereum.request({ method: 'eth_requestAccounts' }))[0];
-            const response = await fetch('/api/ethereum/payload/' + 2);
+            const response = await fetch('/api/ethereum/payload/' + account);
             const payload = (await response.json()).payload;
             const payloadHex = [...new TextEncoder('UTF-8').encode(payload)].map(x => x.toString(16).padStart(2, '0')).join('');
             const signature = await ethereum.request({ method: 'personal_sign', params: [payloadHex, account] });
@@ -74,10 +74,20 @@
                 window.location.href = "/authorize";
             }
         } catch (err) {
+            showSnackBar('Login with ethereum ERROR')
             console.error('Login with ethereum ERROR:', err)
         }
     }
 
-   
+    const showSnackBar = (text) => {
+        const snackbar = document.querySelector('#snackbar')
+        snackbar.innerText = text
+        snackbar.className = "show"
+        setTimeout(() => {
+            snackbar.className = ""
+        }, 3000)
+    }
+
+
 
 </script>
