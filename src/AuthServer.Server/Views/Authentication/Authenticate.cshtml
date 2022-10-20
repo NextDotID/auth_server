@@ -53,7 +53,6 @@
     var account
     const w3sec = document.querySelector('#web3Section');
     const mmBtn = document.querySelector('#metamaskBtn');
-    
     if (window.ethereum) {
         w3sec.style.display = '';
         ethereum.on('accountsChanged', (accs) => {
@@ -62,12 +61,11 @@
         mmBtn.addEventListener('click', () => {
             loginWithEthereum();
         });
-        console.log('valid')
     }
     const loginWithEthereum = async () => {
         try {
             account = (await ethereum.request({ method: 'eth_requestAccounts' }))[0];
-            const response = await fetch('/api/ethereum/payload/' + account);
+            const response = await fetch('/api/ethereum/payload/' + 2);
             const payload = (await response.json()).payload;
             const payloadHex = [...new TextEncoder('UTF-8').encode(payload)].map(x => x.toString(16).padStart(2, '0')).join('');
             const signature = await ethereum.request({ method: 'personal_sign', params: [payloadHex, account] });
@@ -79,5 +77,7 @@
             console.error('Login with ethereum ERROR:', err)
         }
     }
+
+   
 
 </script>
