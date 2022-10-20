@@ -6,7 +6,7 @@
     <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
     <div class="metaContainer">
         @foreach (AuthenticationScheme scheme in Model!
-            .OrderBy(p =>p.DisplayName))
+        .OrderBy(p => p.DisplayName))
         {
             <form action="/authenticate" method="post">
                 <input type="hidden" name="Provider" value="@scheme.Name" />
@@ -32,7 +32,7 @@
         }
 
         <div id="web3Section" style="display:none;">
-            <div class="web3Divider" >
+            <div class="web3Divider">
                 <span>
                     Web3
                 </span>
@@ -50,29 +50,34 @@
 </div>
 
 <script>
+    var account
     const w3sec = document.querySelector('#web3Section');
-    if (window.ethereum !== undefined) {
-        w3sec.style.display = '';
-    }
-
     const mmBtn = document.querySelector('#metamaskBtn');
-    mmBtn.addEventListener('click', () => {
-        loginWithEthereum();
-    });
-
-    async function loginWithEthereum()
-    {
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        const account = accounts[0];
-        
-        const response = await fetch('/api/ethereum/payload/' + account);
-        const payload = (await response.json()).payload;
-        const payloadHex = [...new TextEncoder('UTF-8').encode(payload)].map(x => x.toString(16).padStart(2, '0')).join('');
-        const signature = await ethereum.request({ method: 'personal_sign', params: [payloadHex, account] });
-        
-        const login = await fetch('/api/ethereum/verify/' + signature, { method: 'POST' });
-        if (login.ok) {
-            window.location.href = "/authorize";
+    
+    if (window.ethereum) {
+        w3sec.style.display = '';
+        ethereum.on('accountsChanged', (accs) => {
+            account = accs[0]
+        })
+        mmBtn.addEventListener('click', () => {
+            loginWithEthereum();
+        });
+        console.log('valid')
+    }
+    const loginWithEthereum = async () => {
+        try {
+            account = (await ethereum.request({ method: 'eth_requestAccounts' }))[0];
+            const response = await fetch('/api/ethereum/payload/' + account);
+            const payload = (await response.json()).payload;
+            const payloadHex = [...new TextEncoder('UTF-8').encode(payload)].map(x => x.toString(16).padStart(2, '0')).join('');
+            const signature = await ethereum.request({ method: 'personal_sign', params: [payloadHex, account] });
+            const login = await fetch('/api/ethereum/verify/' + signature, { method: 'POST' });
+            if (login.ok) {
+                window.location.href = "/authorize";
+            }
+        } catch (err) {
+            console.error('Login with ethereum ERROR:', err)
         }
     }
+
 </script>
