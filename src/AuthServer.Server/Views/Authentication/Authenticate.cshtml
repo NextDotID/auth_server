@@ -31,16 +31,18 @@
             </form>
         }
 
-        <div class="web3Divider">
-            <span>
-                Web3
-            </span>
+        <div id="web3Section" style="display:none;">
+            <div class="web3Divider" >
+                <span>
+                    Web3
+                </span>
+            </div>
+            <button class="metaItem" id="metamaskBtn">
+                <img class="metaIcon" src="~/assets/metamask.svg" alt="">
+                <div>MetaMask</div>
+                <div> </div>
+            </button>
         </div>
-        <button class="metaItem" id="metamaskBtn">
-            <img class="metaIcon" src="~/assets/metamask.svg" alt="">
-            <div>MetaMask</div>
-            <div> </div>
-        </button>
     </div>
     <div class="guide">
         New to Next.ID? <a href="">Learn more</a>
@@ -48,6 +50,11 @@
 </div>
 
 <script>
+    const w3sec = document.querySelector('#web3Section');
+    if (window.ethereum !== undefined) {
+        w3sec.style.display = '';
+    }
+
     const mmBtn = document.querySelector('#metamaskBtn');
     mmBtn.addEventListener('click', () => {
         loginWithEthereum();
