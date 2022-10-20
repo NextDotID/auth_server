@@ -5,9 +5,7 @@
     <div class="authTitle">Authentication</div>
     <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
     <div class="metaContainer">
-
         @foreach (AuthenticationScheme scheme in Model!
-            .Where(s => s.DisplayName != "Metamask")
             .OrderBy(p =>p.DisplayName))
         {
             <form action="/authenticate" method="post">
@@ -32,22 +30,42 @@
                 </button>
             </form>
         }
-        @if (Model.Any(s => s.DisplayName == "Metamask"))
-            {
+
         <div class="web3Divider">
             <span>
                 Web3
             </span>
         </div>
-        <button class="metaItem">
+        <button class="metaItem" id="metamaskBtn">
             <img class="metaIcon" src="~/assets/metamask.svg" alt="">
             <div>MetaMask</div>
             <div> </div>
         </button>
-        }
     </div>
     <div class="guide">
         New to Next.ID? <a href="">Learn more</a>
     </div>
-
 </div>
+
+<script>
+    const mmBtn = document.querySelector('#metamaskBtn');
+    mmBtn.addEventListener('click', () => {
+        loginWithEthereum();
+    });
+
+    async function loginWithEthereum()
+    {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+        
+        const response = await fetch('/api/ethereum/payload/' + account);
+        const payload = (await response.json()).payload;
+        const payloadHex = [...new TextEncoder('UTF-8').encode(payload)].map(x => x.toString(16).padStart(2, '0')).join('');
+        const signature = await ethereum.request({ method: 'personal_sign', params: [payloadHex, account] });
+        
+        const login = await fetch('/api/ethereum/verify/' + signature, { method: 'POST' });
+        if (login.ok) {
+            window.location.href = "/authorize";
+        }
+    }
+</script>
