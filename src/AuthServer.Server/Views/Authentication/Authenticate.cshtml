@@ -56,7 +56,7 @@
     if (window.ethereum) {
         w3sec.style.display = '';
         ethereum.on('accountsChanged', (accs) => {
-            account = accs[0]
+            account = accs[0];
         })
         mmBtn.addEventListener('click', () => {
             loginWithEthereum();
@@ -72,22 +72,23 @@
             const login = await fetch('/api/ethereum/verify/' + signature, { method: 'POST' });
             if (login.ok) {
                 window.location.href = "/authorize";
+            } else {
+                const message = await login.json();
+                showSnackBar('Login with ethereum ERROR: ' + message.title);
+                console.error('Login with ethereum ERROR:', message);
             }
         } catch (err) {
-            showSnackBar('Login with ethereum ERROR')
-            console.error('Login with ethereum ERROR:', err)
+            showSnackBar('Login with ethereum ERROR');
+            console.error('Login with ethereum ERROR:', err);
         }
     }
 
     const showSnackBar = (text) => {
-        const snackbar = document.querySelector('#snackbar')
-        snackbar.innerText = text
-        snackbar.className = "show"
+        const snackbar = document.querySelector('#snackbar');
+        snackbar.innerText = text;
+        snackbar.className = "show";
         setTimeout(() => {
-            snackbar.className = ""
-        }, 3000)
+            snackbar.className = "";
+        }, 3000);
     }
-
-
-
 </script>
