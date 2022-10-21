@@ -56,3 +56,48 @@ for details on configuring this project to bundle and minify static web assets. 
   color: #1c68f3;
   font-weight: 700;
 }
+
+#snackbar {
+  visibility: hidden;
+  min-width: 200px;
+  margin-left: -125px;
+  background: rgba(232, 86, 0, 0.95);
+  border-color: #e85600;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 8px 12px;
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  top: 30px;
+  font-size: 14px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+  from {
+    top: 0;
+    opacity: 0;
+  }
+  to {
+    top: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    top: 30px;
+    opacity: 1;
+  }
+  to {
+    top: 0;
+    opacity: 0;
+  }
+}
