@@ -45,7 +45,7 @@
         </div>
     </div>
     <div class="guide">
-        New to Next.ID? <a href="">Learn more</a>
+        New to Next.ID? <a href="https://next.id">Learn more</a>
     </div>
 </div>
 
@@ -91,4 +91,13 @@
             snackbar.className = "";
         }, 3000);
     }
+
+    const resolveAuthenticateURL = () => {
+        const url = window.location.href;
+        localStorage.setItem('back_url', url)
+    }
+    resolveAuthenticateURL()
+
+
+
 </script>
