@@ -41,7 +41,6 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 .next_menuItem {
   color: rgba(255, 255, 255, 0.75);
-  font-family: "Inter";
   font-weight: 500;
   cursor: pointer;
 }
