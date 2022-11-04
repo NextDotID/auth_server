@@ -8,5 +8,17 @@
         Please go back and try authenticating again.
     </div>
     <div class="authSubTitle">Error Message: @Model</div>
-    <div class="confirmBtn" onclick="history.go(-1);">Go back</div>
+    <div id="backBtn" class="confirmBtn" onclick="window.location.href = localStorage.getItem('back_url')">Go back</div>
 </div>
+
+<script>
+    const backBtn = document.querySelector('#backBtn')
+    backBtn.addEventListener('click',()=>{
+        const url = localStorage.getItem('back_url')
+        if(url){
+            window.location.href = url
+        }else{
+            history.go(-1)
+        }
+    })
+</script>

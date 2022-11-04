@@ -26,6 +26,15 @@
             </div>
         </div>
         <button class="confirmBtn" type="submit">Authorize with this</button>
-        <div class="cancelBtn">Cancel</div>
+        <div id="cancelBtn" class="cancelBtn">Cancel</div>
     </form>
 </div>
+
+
+<script>
+    const cBtn = document.querySelector('#cancelBtn');
+    cBtn.addEventListener('click',()=>{
+        window.location.href = localStorage.getItem('back_url')
+    })
+
+</script>

@@ -88,6 +88,13 @@
         }, 3000)
     }
 
+    const resolveAuthenticateURL = () => {
+        const url = window.location.href;
+        console.log(url,'url')
+        localStorage.setItem('back_url', url)
+    }
+    resolveAuthenticateURL()
+
 
 
 </script>
