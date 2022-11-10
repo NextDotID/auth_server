@@ -8,31 +8,43 @@ for details on configuring this project to bundle and minify static web assets. 
   line-height: 60px;
 }
 
-.logo {
-  width: 4rem;
-  height: 4rem;
-  cursor: pointer;
-}
-
 .container {
   position: relative;
   background: #141414;
   height: 100%;
+  padding: 20px 10px;
+  box-sizing: border-box;
 }
 
-.header {
-  padding: 2rem;
+.header_container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  width: 100%;
+}
+.nextid-logo {
+  height: 1rem;
+  width: auto;
+  cursor: pointer;
+}
+.nextid_header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  max-width: 856px;
 }
 .flex {
-  display: flex;
   align-items: center;
-  justify-content: space-around;
+  display: flex;
+  justify-content: space-between;
 }
 
 .next_menu {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  gap: 0.8rem;
 }
 @media (max-width: 520px) {
   .next_menu {
@@ -40,22 +52,19 @@ for details on configuring this project to bundle and minify static web assets. 
   }
 }
 .next_menuItem {
-  color: rgba(255, 255, 255, 0.75);
+  border-radius: 0.4rem;
+  display: flex;
   font-weight: 500;
+  line-height: 1.5;
+  color: #fff;
   cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.4rem;
+  text-decoration: none;
 }
-
-.next_badge {
-  background: rgba(28, 104, 243, 0.25);
-  border-radius: 2px;
-  font-size: 10px;
-  padding: 4px 6px;
-  margin-left: 10px;
-  margin-right: 40px;
-  color: #1c68f3;
-  font-weight: 700;
+.next_menuItem:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
-
 #snackbar {
   visibility: hidden;
   min-width: 200px;
