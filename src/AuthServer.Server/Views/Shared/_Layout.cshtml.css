@@ -44,7 +44,7 @@ for details on configuring this project to bundle and minify static web assets. 
 .next_menu {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
 }
 @media (max-width: 520px) {
   .next_menu {
