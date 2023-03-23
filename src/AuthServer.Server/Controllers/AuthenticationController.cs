@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Security.Principal;
 using AuthServer.Server.Extensions;
 using AuthServer.Server.Services.Avatar;
 using AuthServer.Server.Services.Proof;
@@ -20,7 +21,7 @@ public class AuthenticationController : Controller
         this.avatarService = avatarService;
     }
 
-    [HttpGet("~/Authenticate")]
+    [HttpGet("~/authenticate")]
     public async Task<IActionResult> SignIn(
         [FromQuery(Name = "redirect_uri")] string redirectUri,
         [FromQuery(Name = "expired_at")] long expiredAt,
@@ -44,7 +45,7 @@ public class AuthenticationController : Controller
         return View("Authenticate", await HttpContext.GetExternalProvidersAsync());
     }
 
-    [HttpPost("~/Authenticate")]
+    [HttpPost("~/authenticate")]
     public async Task<IActionResult> SignIn([FromForm] string provider)
     {
         if (string.IsNullOrWhiteSpace(provider) || !await HttpContext.IsProviderSupportedAsync(provider))
@@ -52,21 +53,22 @@ public class AuthenticationController : Controller
             return View("Error", "BadRequest");
         }
 
-        return Challenge(new AuthenticationProperties { RedirectUri = "/Authorize" }, provider);
+        return Challenge(new AuthenticationProperties { RedirectUri = "/authorize" }, provider);
     }
 
     [Authorize]
-    [HttpGet("~/Authorize")]
+    [HttpGet("~/authorize")]
     public async Task<IActionResult> Authorize()
     {
-        if (string.IsNullOrEmpty(User.Identity?.AuthenticationType) || string.IsNullOrEmpty(User.Identity.Name))
+        (var platform, var identity) = ExtractIdentity(User.Identity);
+        if (string.IsNullOrEmpty(platform) || string.IsNullOrEmpty(identity))
         {
-            return View("Unauthorized", "Unauthorized");
+            return View("Error", "Forbidden");
         }
 
         var localAvatars = avatarService.GetAvailableAvatars().ToList();
         List<string> selectables = await proofService
-            .FindAvatarsAsync((User.Identity as ClaimsIdentity)!)
+            .FindAvatarsAsync(platform, identity)
             .Where(s => localAvatars.Contains(s, StringComparer.OrdinalIgnoreCase))
             .ToListAsync();
 
@@ -89,10 +91,11 @@ public class AuthenticationController : Controller
     }
 
     [Authorize]
-    [HttpPost("~/Authorize")]
+    [HttpPost("~/authorize")]
     public async Task<IActionResult> Authorize([FromForm] string avatar)
     {
-        if (string.IsNullOrEmpty(User.Identity?.AuthenticationType) || string.IsNullOrEmpty(User.Identity.Name))
+        (var platform, var identity) = ExtractIdentity(User.Identity);
+        if (string.IsNullOrEmpty(platform) || string.IsNullOrEmpty(identity))
         {
             return View("Error", "Forbidden");
         }
@@ -104,7 +107,7 @@ public class AuthenticationController : Controller
         }
 
         var found = await proofService
-            .FindAvatarsAsync((User.Identity as ClaimsIdentity)!)
+            .FindAvatarsAsync(platform, identity)
             .AnyAsync(i => i.IsTheSameHex(avatar));
         if (!found)
         {
@@ -128,8 +131,8 @@ public class AuthenticationController : Controller
         return View("Error", "BadRequest");
     }
 
-    [HttpGet("~/SignOut")]
-    [HttpPost("~/SignOut")]
+    [HttpGet("~/signout")]
+    [HttpPost("~/signout")]
     public IActionResult SignOutCurrentUser()
     {
         // Instruct the cookies middleware to delete the local cookie created
@@ -138,5 +141,29 @@ public class AuthenticationController : Controller
         return SignOut(
             new AuthenticationProperties { RedirectUri = "/" },
             CookieAuthenticationDefaults.AuthenticationScheme);
+    }
+
+    private (string? Platform, string? Identity) ExtractIdentity(IIdentity? id)
+    {
+        string? platform, identity;
+        switch (id?.AuthenticationType)
+        {
+            case "Discord":
+                platform = "discord";
+                identity = id.Name +
+                           "#" +
+                           (id as ClaimsIdentity)!.Claims.FirstOrDefault(c => c.Type == "urn:discord:user:discriminator")?.Value;
+                break;
+            case "Twitter":
+                platform = "twitter";
+                identity = id.Name;
+                break;
+            default:
+                platform = id?.AuthenticationType?.ToLower();
+                identity = id?.Name;
+                break;
+        }
+
+        return (platform, identity);
     }
 }

@@ -5,11 +5,10 @@
     <div class="authTitle">Authentication</div>
     <p>Sign in <strong>Next.ID Demo</strong> with one of the providers:</p>
     <div class="metaContainer">
-
-        @foreach (AuthenticationScheme scheme in Model!.Where(s => s.DisplayName != "Metamask").OrderBy(p =>
-        p.DisplayName))
+        @foreach (AuthenticationScheme scheme in Model!
+        .OrderBy(p => p.DisplayName))
         {
-            <form action="/Authenticate" method="post">
+            <form action="/authenticate" method="post">
                 <input type="hidden" name="Provider" value="@scheme.Name" />
                 <button class="metaItem" type="submit">
                     @switch (scheme.DisplayName)
@@ -31,22 +30,74 @@
                 </button>
             </form>
         }
-        @if (Model.Any(s => s.DisplayName == "Metamask"))
-            {
-        <div class="web3Divider">
-            <span>
-                Web3
-            </span>
+
+        <div id="web3Section" style="display:none;">
+            <div class="web3Divider">
+                <span>
+                    Web3
+                </span>
+            </div>
+            <button class="metaItem" id="metamaskBtn">
+                <img class="metaIcon" src="~/assets/metamask.svg" alt="">
+                <div>MetaMask</div>
+                <div> </div>
+            </button>
         </div>
-        <button class="metaItem">
-            <img class="metaIcon" src="~/assets/metamask.svg" alt="">
-            <div>MetaMask</div>
-            <div> </div>
-        </button>
-        }
     </div>
     <div class="guide">
-        New to Next.ID? <a href="">Learn more</a>
+        New to Next.ID? <a href="https://next.id">Learn more</a>
     </div>
-
 </div>
+
+<script>
+    var account
+    const w3sec = document.querySelector('#web3Section');
+    const mmBtn = document.querySelector('#metamaskBtn');
+    if (window.ethereum) {
+        w3sec.style.display = '';
+        ethereum.on('accountsChanged', (accs) => {
+            account = accs[0];
+        })
+        mmBtn.addEventListener('click', () => {
+            loginWithEthereum();
+        });
+    }
+    const loginWithEthereum = async () => {
+        try {
+            account = (await ethereum.request({ method: 'eth_requestAccounts' }))[0];
+            const response = await fetch('/api/ethereum/payload/' + account);
+            const payload = (await response.json()).payload;
+            const payloadHex = [...new TextEncoder('UTF-8').encode(payload)].map(x => x.toString(16).padStart(2, '0')).join('');
+            const signature = await ethereum.request({ method: 'personal_sign', params: [payloadHex, account] });
+            const login = await fetch('/api/ethereum/verify/' + signature, { method: 'POST' });
+            if (login.ok) {
+                window.location.href = "/authorize";
+            } else {
+                const message = await login.json();
+                showSnackBar('Login with ethereum ERROR: ' + message.title);
+                console.error('Login with ethereum ERROR:', message);
+            }
+        } catch (err) {
+            showSnackBar('Login with ethereum ERROR');
+            console.error('Login with ethereum ERROR:', err);
+        }
+    }
+
+    const showSnackBar = (text) => {
+        const snackbar = document.querySelector('#snackbar');
+        snackbar.innerText = text;
+        snackbar.className = "show";
+        setTimeout(() => {
+            snackbar.className = "";
+        }, 3000);
+    }
+
+    const resolveAuthenticateURL = () => {
+        const url = window.location.href;
+        localStorage.setItem('back_url', url)
+    }
+    resolveAuthenticateURL()
+
+
+
+</script>

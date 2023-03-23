@@ -13,7 +13,7 @@ public class ProofService : IProofService
         httpClient.BaseAddress = new Uri(configuration.GetValue<string>("Proof:Endpoint"));
     }
 
-    public async IAsyncEnumerable<string> FindAvatarsAsync(ClaimsIdentity id)
+    public IAsyncEnumerable<string> FindAvatarsAsync(ClaimsIdentity id)
     {
         string? platform, identity;
         switch (id.AuthenticationType)
@@ -34,6 +34,16 @@ public class ProofService : IProofService
                 break;
         }
 
+        if (string.IsNullOrEmpty(platform) || string.IsNullOrEmpty(identity))
+        {
+            return AsyncEnumerable.Empty<string>();
+        }
+
+        return FindAvatarsAsync(platform, identity);
+    }
+
+    public async IAsyncEnumerable<string> FindAvatarsAsync(string platform, string identity)
+    {
         var page = 0;
         while (true)
         {
