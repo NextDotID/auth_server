@@ -4,10 +4,11 @@ on:
   push:
     branches:
     - main
+    - develop
 
 jobs:
   build-image:
-    if: (github.ref_name == 'main' || github.ref_name == 'feature/CI') && github.repository == 'nextdotid/auth_server'
+    if: (github.ref_name == 'main' || github.ref_name == 'develop' || github.ref_name == 'feature/CI') && github.repository == 'nextdotid/auth_server'
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ${{ github.repository }}
